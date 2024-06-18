@@ -24,6 +24,7 @@
     "react-scripts": "file:../node_modules/react-scripts"
   },
   "devDependencies": {
+    "babel-plugin-transform-async-to-promises": "^0.8.18"
   },
   "browserslist": {
     "production": [
