@@ -9,6 +9,10 @@ export enum ViewMode {
   QuarterYear = "QuarterYear",
   Year = "Year",
 }
+export interface ViewWindow {
+  start: Date,
+  end: Date,
+}
 export type TaskType = "task" | "milestone" | "project";
 export interface Task {
   id: string;
@@ -77,6 +81,7 @@ export interface EventOption {
 export interface DisplayOption {
   viewMode?: ViewMode;
   viewDate?: Date;
+  viewWindow?: ViewWindow;
   preStepsCount?: number;
   /**
    * Specifies the month name language. Able formats: ISO 639-2, Java Locale

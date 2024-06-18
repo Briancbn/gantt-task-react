@@ -247,12 +247,14 @@ const convertToMilestone = (
 };
 
 const taskXCoordinate = (xDate: Date, dates: Date[], columnWidth: number) => {
-  const index = dates.findIndex(d => d.getTime() >= xDate.getTime()) - 1;
-
-  const remainderMillis = xDate.getTime() - dates[index].getTime();
+  let index = dates.findIndex(d => d.getTime() >= xDate.getTime());
+  if (index === -1) {
+    return (dates.length) * columnWidth
+  }
+  const remainderMillis = dates[index].getTime() - xDate.getTime();
   const percentOfInterval =
-    remainderMillis / (dates[index + 1].getTime() - dates[index].getTime());
-  const x = index * columnWidth + percentOfInterval * columnWidth;
+    remainderMillis / (dates[1].getTime() - dates[0].getTime());
+  const x = index * columnWidth - percentOfInterval * columnWidth;
   return x;
 };
 const taskXCoordinateRTL = (

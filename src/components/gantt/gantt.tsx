@@ -55,6 +55,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   arrowIndent = 20,
   todayColor = "rgba(252, 248, 227, 0.5)",
   viewDate,
+  viewWindow,
   TooltipContent = StandardTooltipContent,
   TaskListHeader = TaskListHeaderDefault,
   TaskListTable = TaskListTableDefault,
@@ -69,6 +70,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const taskListRef = useRef<HTMLDivElement>(null);
   const [dateSetup, setDateSetup] = useState<DateSetup>(() => {
+    if (viewWindow) {
+      return { viewMode, dates: seedDates(viewWindow.start, viewWindow.end, viewMode)};
+    }
     const [startDate, endDate] = ganttDateRange(tasks, viewMode, preStepsCount);
     return { viewMode, dates: seedDates(startDate, endDate, viewMode) };
   });
@@ -107,12 +111,24 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
       filteredTasks = tasks;
     }
     filteredTasks = filteredTasks.sort(sortTasks);
-    const [startDate, endDate] = ganttDateRange(
-      filteredTasks,
-      viewMode,
-      preStepsCount
-    );
-    let newDates = seedDates(startDate, endDate, viewMode);
+    let newDates: Date[];
+    if (viewWindow) {
+      newDates = seedDates(viewWindow.start, viewWindow.end, viewMode)
+      // Filter out tasks that are out of range
+      filteredTasks = filteredTasks.filter(
+        (task) => (
+          task.start.getTime() <= viewWindow.end.getTime() &&
+          task.end.getTime() >= viewWindow.start.getTime()
+        )
+      )
+    } else {
+      const [startDate, endDate] = ganttDateRange(
+        filteredTasks,
+        viewMode,
+        preStepsCount
+      );
+      newDates = seedDates(startDate, endDate, viewMode);
+    }
     if (rtl) {
       newDates = newDates.reverse();
       if (scrollX === -1) {
@@ -145,6 +161,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   }, [
     tasks,
     viewMode,
+    viewWindow,
     preStepsCount,
     rowHeight,
     barCornerRadius,
@@ -187,6 +204,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     }
   }, [
     viewDate,
+    viewWindow,
     columnWidth,
     dateSetup.dates,
     dateSetup.viewMode,
