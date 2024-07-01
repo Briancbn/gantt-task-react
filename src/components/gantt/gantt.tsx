@@ -200,7 +200,10 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         return;
       }
       setCurrentViewDate(viewDate);
-      setScrollX(columnWidth * index);
+      setScrollX(
+        (viewDate.valueOf() - dates[0].valueOf()) / 
+        (dates[1].valueOf() - dates[0].valueOf()) 
+        * columnWidth);
     }
   }, [
     viewDate,
