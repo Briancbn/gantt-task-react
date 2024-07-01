@@ -87,13 +87,16 @@ export const GridBody: React.FC<GridBodyProps> = ({
           "millisecond"
         ).getTime() >= now.getTime())
     ) {
+      // Calculate tick length
+      let tickXtoday = tickX + 
+        columnWidth * ((now.getTime() - date.getTime()) / (dates[1].getTime() - dates[0].getTime()))
       today = (
-        <rect
-          x={tickX}
-          y={0}
-          width={columnWidth}
-          height={y}
-          fill={todayColor}
+        <line
+          x1={tickXtoday}
+          y1={0}
+          x2={tickXtoday}
+          y2={y}
+          className={styles.gridTickNow}
         />
       );
     }

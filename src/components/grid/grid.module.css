@@ -13,3 +13,7 @@
 .gridTick {
   stroke: #e6e4e4;
 }
+
+.gridTickNow {
+  stroke: #ff0000;
+}
