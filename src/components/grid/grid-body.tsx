@@ -33,7 +33,15 @@ export const GridBody: React.FC<GridBodyProps> = ({
       className={styles.gridRowLine}
     />,
   ];
+  let currentGroup: string = ""
   for (const task of tasks) {
+    if (!task.group) {
+      currentGroup = ""
+    } else if (task.group !== currentGroup) {
+      currentGroup = task.group
+    } else {
+      continue;
+    }
     gridRows.push(
       <rect
         key={"Row" + task.id}

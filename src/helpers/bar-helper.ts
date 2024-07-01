@@ -22,10 +22,20 @@ export const convertToBarTasks = (
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
 ) => {
-  let barTasks = tasks.map((t, i) => {
-    return convertToBarTask(
-      t,
-      i,
+  let index: number = -1;
+  let currentGroup: string = "";
+  let barTasks: BarTask[] = []
+  for (const task of tasks) {
+    if (!task.group) {
+      currentGroup = ""
+      index += 1
+    } else if (task.group !== currentGroup) {
+      currentGroup = task.group
+      index += 1
+    }
+    barTasks.push(convertToBarTask(
+      task,
+      index,
       dates,
       columnWidth,
       rowHeight,
@@ -43,8 +53,9 @@ export const convertToBarTasks = (
       projectBackgroundSelectedColor,
       milestoneBackgroundColor,
       milestoneBackgroundSelectedColor
-    );
-  });
+    ));
+    
+  }
 
   // set dependencies
   barTasks = barTasks.map(task => {

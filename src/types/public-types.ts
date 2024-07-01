@@ -31,6 +31,7 @@ export interface Task {
     progressSelectedColor?: string;
   };
   isDisabled?: boolean;
+  group?: string;
   project?: string;
   dependencies?: string[];
   hideChildren?: boolean;
@@ -83,6 +84,7 @@ export interface DisplayOption {
   viewDate?: Date;
   viewWindow?: ViewWindow;
   preStepsCount?: number;
+  enableGroup?: boolean
   /**
    * Specifies the month name language. Able formats: ISO 639-2, Java Locale
    */

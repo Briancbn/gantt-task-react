@@ -59,3 +59,30 @@ export const sortTasks = (taskA: Task, taskB: Task) => {
     return 0;
   }
 };
+
+export const sortTasksByGroup = (taskA: Task, taskB: Task) => {
+  const orderA = taskA.group || '';
+  const orderB = taskB.group || '';
+  if (orderA > orderB) {
+    return 1;
+  } else if (orderA < orderB) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+export const lengthByGroup = (tasks: Task[]) => {
+  let size: number = 0;
+  let currentGroup: string = "";
+  for (const task of tasks) {
+    if (!task.group) {
+      currentGroup = ""
+      size += 1
+    } else if (task.group !== currentGroup) {
+      currentGroup = task.group
+      size += 1
+    }
+  }
+  return size
+}

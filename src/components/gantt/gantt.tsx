@@ -21,7 +21,7 @@ import { convertToBarTasks } from "../../helpers/bar-helper";
 import { GanttEvent } from "../../types/gantt-task-actions";
 import { DateSetup } from "../../types/date-setup";
 import { HorizontalScroll } from "../other/horizontal-scroll";
-import { removeHiddenTasks, sortTasks } from "../../helpers/other-helper";
+import { removeHiddenTasks, sortTasks, sortTasksByGroup } from "../../helpers/other-helper";
 import styles from "./gantt.module.css";
 
 export const Gantt: React.FunctionComponent<GanttProps> = ({
@@ -33,6 +33,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   ganttHeight = 0,
   viewMode = ViewMode.Day,
   preStepsCount = 1,
+  enableGroup = false,
   locale = "en-GB",
   barFill = 60,
   barCornerRadius = 3,
@@ -110,7 +111,12 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     } else {
       filteredTasks = tasks;
     }
-    filteredTasks = filteredTasks.sort(sortTasks);
+
+    if (enableGroup) {
+      filteredTasks = filteredTasks.sort(sortTasksByGroup);
+    } else {
+      filteredTasks = filteredTasks.sort(sortTasks);
+    }
     let newDates: Date[];
     if (viewWindow) {
       newDates = seedDates(viewWindow.start, viewWindow.end, viewMode)
@@ -270,7 +276,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   useEffect(() => {
     if (ganttHeight) {
       setSvgContainerHeight(ganttHeight + headerHeight);
-    } else {
+    } else { 
       setSvgContainerHeight(tasks.length * rowHeight + headerHeight);
     }
   }, [ganttHeight, tasks, headerHeight, rowHeight]);

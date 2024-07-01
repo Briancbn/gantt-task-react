@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { GridProps, Grid } from "../grid/grid";
 import { CalendarProps, Calendar } from "../calendar/calendar";
+import { lengthByGroup } from "../../helpers/other-helper"
 import { TaskGanttContentProps, TaskGanttContent } from "./task-gantt-content";
 import styles from "./gantt.module.css";
 
@@ -63,7 +64,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={gridProps.svgWidth}
-          height={barProps.rowHeight * barProps.tasks.length}
+          height={barProps.rowHeight * lengthByGroup(barProps.tasks)}
           fontFamily={barProps.fontFamily}
           ref={ganttSVGRef}
         >
